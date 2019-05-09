@@ -34,7 +34,6 @@ requirements:
     - lalburst >=1.5.1
     - lalinspiral >=1.8.1
     - lalsimulation >=1.8.2
-    - lalapps >=6.23.0
     - ldas-tools-framecpp >=2.6.2
     - gstlal >=1.5.0
     - numpy
@@ -42,6 +41,7 @@ requirements:
     - python 2.7
     - python-lal
     - python-ligo-lw >=1.2.0
+    - lscsoft-glue >=1.59.3
   run:
     - fftw
     - gsl
@@ -92,15 +92,12 @@ test:
     - gstlal_glitch_population --help
     - gstlal_harmonic_mean_psd --help
     - gstlal_kafka_dag --help
-    #- gstlal_ligolw_add_without_reassign --help <missing ligo.lw import>
-    #- gstlal_median_of_psds --help <missing ligo.lw import>
+    - gstlal_ligolw_add_without_reassign --help
+    - gstlal_median_of_psds --help
     - gstlal_reduce_dag --help
-    #- gstlal_segments_operations --help <missing ligo.lw import>
-    #- gstlal_segments_trim --help <missing ligo.lw import>
-    #- gstlal_svd_bank_checkerboard --help <missing ligo.lw import>
-    # check links
-    - conda inspect linkages -p ${PREFIX} ${PKG_NAME}  # [not win]
-    - conda inspect objects -p ${PREFIX} ${PKG_NAME}  # [osx]
+    - gstlal_segments_operations --help
+    - gstlal_segments_trim --help
+    - gstlal_svd_bank_checkerboard --help
 
 about:
   home: https://wiki.ligo.org/Computing/DASWG/GstLAL
