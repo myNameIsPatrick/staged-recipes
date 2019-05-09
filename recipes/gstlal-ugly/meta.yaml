@@ -1,0 +1,124 @@
+{% set name = "gstlal-ugly" %}
+{% set version = "1.6.3" %}
+{% set sha256 = "231e26aee3c70f328a33c688588fd16081b56e1ad3b5c511bee2e37f92fb7048" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  fn: {{ name }}-{{ version }}.tar.xz
+  url: http://software.ligo.org/lscsoft/source/{{ name }}-{{ version }}.tar.gz
+  sha256: {{ sha256 }}
+
+build:
+  number: 0
+  skip: true  # [win]
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - pkg-config
+    - make
+  host:
+    - fftw
+    - gsl
+    - atlas
+    - gstreamer 1.14.4
+    - gst-orc >=0.4
+    - gst-plugins-base
+    - gst-python
+    - lal >=6.19.0
+    - lalmetaio >=1.5.0
+    - lalburst >=1.5.1
+    - lalinspiral >=1.8.1
+    - lalsimulation >=1.8.2
+    - lalapps >=6.23.0
+    - ldas-tools-framecpp >=2.6.2
+    - gstlal >=1.5.0
+    - numpy
+    - pygobject >=3.14
+    - python 2.7
+    - python-lal
+    - python-ligo-lw >=1.2.0
+  run:
+    - fftw
+    - gsl
+    - atlas
+    - {{ pin_compatible('gstreamer') }}
+    - gst-orc >=0.4
+    - gst-plugins-base
+    - gst-python
+    - lal >=6.19.2
+    - lalmetaio >=1.5.0
+    - lalburst >=1.5.1
+    - lalinspiral >=1.8.1
+    - lalsimulation >=1.8.2
+    - lalapps >=6.23.0
+    - ligo-segments >=1.0.0
+    - lscsoft-glue >=1.59.3
+    - ldas-tools-framecpp >=2.6.2
+    - gstlal >=1.5.0
+    - matplotlib-base
+    - h5py
+    - {{ pin_compatible('numpy') }}
+    - {{ pin_compatible('scipy') }}
+    - pyfftw
+    - pygobject >=3.14
+    - python 2.7
+    - python
+    - python-lal
+    - python-lalsimulation
+    - python-ldas-tools-framecpp
+    - python-ligo-lw >=1.2.0
+
+test:
+  imports:
+    - gstlal
+    - gstlal.aggregator
+    - gstlal.metric
+    - gstlal.tree
+  commands:
+    # set variables
+    - export TMPDIR=$(python -c "import tempfile; print(tempfile.gettempdir())")
+    - export GSTLAL_FIR_WHITEN=0
+    # check last import
+    - ${PYTHON} -c "import gstlal.multirate_datasource"
+    # check executables
+    - gstlal_condor_top --help
+    - gstlal_dag_run_time --help
+    - gstlal_get_online_coinc_times --help
+    - gstlal_glitch_population --help
+    - gstlal_harmonic_mean_psd --help
+    - gstlal_kafka_dag --help
+    #- gstlal_ligolw_add_without_reassign --help <missing ligo.lw import>
+    #- gstlal_median_of_psds --help <missing ligo.lw import>
+    - gstlal_reduce_dag --help
+    #- gstlal_segments_operations --help <missing ligo.lw import>
+    #- gstlal_segments_trim --help <missing ligo.lw import>
+    #- gstlal_svd_bank_checkerboard --help <missing ligo.lw import>
+    # check links
+    - conda inspect linkages -p ${PREFIX} ${PKG_NAME}  # [not win]
+    - conda inspect objects -p ${PREFIX} ${PKG_NAME}  # [osx]
+
+about:
+  home: https://wiki.ligo.org/Computing/DASWG/GstLAL
+  dev_url: https://git.ligo.org/lscsoft/gstlal/
+  doc_url: https://docs.ligo.org/lscsoft/gstlal/{{ name }}/{{ name }}.html
+  license: GPLv2
+  license_family: GPL
+  license_file: COPYING
+  summary: gstlal-ugly
+  description: |
+    This package provides a variety of gstreamer elements for
+    gravitational-wave data analysis and some libraries to help write
+    such elements.  The code here sits on top of several other libraries,
+    notably the LIGO Algorithm Library (LAL), FFTW, the GNU Scientific
+    Library (GSL), and, of course, GStreamer.
+    This package contains the plugins and shared libraries required to run
+    gstlal-based applications.
+
+extra:
+  recipe-maintainers:
+    - myNameIsPatrick
