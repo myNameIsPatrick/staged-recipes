@@ -23,20 +23,16 @@ requirements:
     - make
   host:
     - fftw
+    - glib
     - gsl
-    - atlas
     - gstreamer 1.14.4
     - gst-orc >=0.4
     - gst-plugins-base
     - gst-python
+    - gstlal >=1.5.0
     - lal >=6.19.0
     - lalmetaio >=1.5.0
-    - lalburst >=1.5.1
-    - lalinspiral >=1.8.1
-    - lalsimulation >=1.8.2
     - ldas-tools-framecpp >=2.6.2
-    - gstlal >=1.5.0
-    - numpy
     - pygobject >=3.14
     - python 2.7
     - python-lal
@@ -45,32 +41,25 @@ requirements:
   run:
     - fftw
     - gsl
-    - atlas
     - {{ pin_compatible('gstreamer') }}
     - gst-orc >=0.4
     - gst-plugins-base
     - gst-python
+    - gstlal >=1.5.0
+    - h5py
     - lal >=6.19.2
     - lalmetaio >=1.5.0
-    - lalburst >=1.5.1
-    - lalinspiral >=1.8.1
-    - lalsimulation >=1.8.2
     - lalapps >=6.23.0
     - ligo-segments >=1.0.0
     - lscsoft-glue >=1.59.3
     - ldas-tools-framecpp >=2.6.2
-    - gstlal >=1.5.0
     - matplotlib-base
-    - h5py
-    - {{ pin_compatible('numpy') }}
-    - {{ pin_compatible('scipy') }}
-    - pyfftw
+    - numpy
+    - scipy
     - pygobject >=3.14
     - python 2.7
-    - python
     - python-lal
     - python-lalsimulation
-    - python-ldas-tools-framecpp
     - python-ligo-lw >=1.2.0
 
 test:
@@ -80,11 +69,6 @@ test:
     - gstlal.metric
     - gstlal.tree
   commands:
-    # set variables
-    - export TMPDIR=$(python -c "import tempfile; print(tempfile.gettempdir())")
-    - export GSTLAL_FIR_WHITEN=0
-    # check last import
-    - ${PYTHON} -c "import gstlal.multirate_datasource"
     # check executables
     - gstlal_condor_top --help
     - gstlal_dag_run_time --help
